@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application of Derivatives in Modeling Trunk Height Growth of Elaeis guineensis in Malaysian Plantation Systems</title>
+    <!-- Tailwind CSS for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for High-performance Scientific Graphics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for Premium Science & Agri Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for Exquisite Academic Typesetting -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+        :root {
+            --neon-green: #00ff66;
+            --emerald-glow: rgba(0, 255, 102, 0.15);
+            --dark-abyss: #050b07;
+            --card-bg: rgba(10, 25, 18, 0.7);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark-abyss);
+            color: #e2e8f0;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 102, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 102, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 102, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 255, 102, 0.05);
+        }
+
+        /* Futuristic Floating Matrix/Math Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #06100a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 102, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 102, 0.5);
+        }
+
+        /* Active Slider Custom Style */
+        .slider-glow::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            cursor: pointer;
+            box-shadow: 0 0 12px var(--neon-green);
+            transition: transform 0.1s;
+        }
+        .slider-glow::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+
+        /* Silhouette background animation */
+        .silhouette-bg {
+            position: absolute;
+            bottom: 0;
+            right: 10%;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 1;
+            width: 500px;
+            height: auto;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.03); opacity: 1; }
+        }
+
+        .neon-glow-text {
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+        }
+
+        .step-active {
+            border-left-color: var(--neon-green) !important;
+            background: rgba(0, 255, 102, 0.05);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- Canvas background for animated mathematical floating particles -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- Background Silhouette of Oil Palm -->
+    <svg class="silhouette-bg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 100 V40 M50 70 C30 65, 20 50, 5 55 M50 60 C70 55, 80 40, 95 45 M50 50 C25 40, 15 25, 2 20 M50 45 C75 35, 85 20, 98 15 M50 40 C35 25, 30 5, 15 2 M50 40 C65 25, 70 5, 85 2" stroke="#00ff66" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+
+    <!-- TOP HEADER / BANNER -->
+    <header class="relative z-10 border-b border-emerald-900/40 bg-black/60 backdrop-blur-md px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-emerald-500 rounded-full blur-md opacity-55 animate-pulse"></div>
+                    <div class="w-12 h-12 rounded-full border-2 border-emerald-400 bg-emerald-950/80 flex items-center justify-center text-emerald-400 relative z-10">
+                        <i class="fa-solid fa-seedling text-xl"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/60">Agrotechnology (SFA) Academic Research Suite</span>
+                    <h1 class="text-lg md:text-xl font-bold text-white tracking-tight mt-1">
+                        Application of Derivatives in Modeling Trunk Height Growth of <span class="text-emerald-400 italic">Elaeis guineensis</span> in Malaysian Plantation Systems
+                    </h1>
+                </div>
+            </div>
+            <div class="text-right text-xs text-gray-400 font-medium">
+                <p>Location Context: <span class="text-emerald-400 font-semibold">Malaysia (MPOB Guidelines)</span></p>
+                <p class="mono mt-0.5">Model Parameters: Tenera Cultivar</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT SIDE: BIOSCIENCE & CALCULUS ENGINE CONTROLS + MATHEMATICAL THEORY (8 COLS) -->
+        <div class="lg:col-span-8 flex flex-col gap-6">
+
+            <!-- INTRODUCTORY BRIEF & SCIENTIFIC PARADIGM -->
+            <section class="glass-card rounded-2xl p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl"></div>
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-microscope text-emerald-400"></i> Mathematical Biology of Oil Palm Growth
+                </h2>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    In commercial Malaysian agriculture, the vertical trunk growth dynamic of <em>Elaeis guineensis</em> (Tenera genotype) represents a critical physical variable. Trunk height ($H$) dictates harvesting labor costs, light capture efficiency, and ultimate plantation replanting life-cycles (typically 25-30 years). Using standard empirical growth data compiled across Peninsular and East Malaysian plantations, we map trunk elongation through a sigmoid <strong>Logistic Growth Function</strong>.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-emerald-950/30 p-4 rounded-xl border border-emerald-900/40">
+                    <div>
+                        <span class="text-xs text-emerald-400 uppercase font-semibold">Primary Height Function $H(t)$</span>
+                        <div class="my-2 py-1 text-base font-bold mono text-white">
+                            $$H(t) = \frac{12}{1 + 5e^{-0.22t}}$$
+                        </div>
+                        <p class="text-xs text-gray-400">Where $H(t)$ is height in meters, and $t$ is palm age in years since field planting.</p>
+                    </div>
+                    <div>
+                        <span class="text-xs text-emerald-400 uppercase font-semibold">First Derivative $H'(t)$ (Velocity)</span>
+                        <div class="my-2 py-1 text-base font-bold mono text-white">
+                            $$H'(t) = \frac{13.2 e^{-0.22t}}{(1 + 5e^{-0.22t})^2}$$
+                        </div>
+                        <p class="text-xs text-gray-400">Represents the instantaneous vertical elongation rate in meters per year ($\frac{dH}{dt}$).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE SCIENTIFIC SIMULATOR DASHBOARD -->
+            <section class="glass-card rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-ping"></span>
+                            Interactive Calculus & Growth Engine
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-1">Simulate plantation evolution. Click either graph or scrub timeline to calculate instant rates.</p>
+                    </div>
+                    <!-- Legend Indicators -->
+                    <div class="flex gap-4 text-xs font-semibold">
+                        <span class="flex items-center gap-1.5 text-emerald-400"><i class="fa-solid fa-circle text-[8px]"></i> Height $H(t)$</span>
+                        <span class="flex items-center gap-1.5 text-cyan-400"><i class="fa-solid fa-circle text-[8px]"></i> Velocity $H'(t)$</span>
+                    </div>
+                </div>
+
+                <!-- MAIN GRAPHS ROW -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="p-3 bg-black/40 rounded-xl border border-emerald-900/30">
+                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-2 text-center">Trunk Height Dynamic $H(t)$</span>
+                        <div class="h-64 relative">
+                            <canvas id="heightChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-black/40 rounded-xl border border-emerald-900/30">
+                        <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-2 text-center">Instantaneous Velocity $H'(t)$</span>
+                        <div class="h-64 relative">
+                            <canvas id="velocityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDER BAR CONTROLLER -->
+                <div class="bg-emerald-950/20 p-5 rounded-xl border border-emerald-950/60 mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <label for="ageSlider" class="text-sm font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-emerald-400"></i> Set Plantation Stand Age:
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 bg-emerald-950 text-emerald-400 font-extrabold text-lg rounded-lg border border-emerald-500/30 shadow-inner mono" id="ageDisplay">10.0</span>
+                            <span class="text-xs text-gray-400 uppercase font-semibold">Years</span>
+                        </div>
+                    </div>
+                    <input type="range" id="ageSlider" min="0" max="35" step="0.1" value="10" 
+                           class="w-full h-2 bg-emerald-950/80 rounded-lg appearance-none cursor-pointer accent-emerald-400 slider-glow">
+                    <div class="flex justify-between text-[10px] text-gray-500 font-bold tracking-widest uppercase mt-2">
+                        <span>0 yr (Field Planting)</span>
+                        <span>10 yr (Peak)</span>
+                        <span>20 yr (Mature)</span>
+                        <span>30 yr (Replant Limit)</span>
+                        <span>35 yr (Asymptotic max)</span>
+                    </div>
+                </div>
+
+                <!-- DYNAMIC ANALYTICAL CALCULUS READOUT -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-black/40 border border-emerald-900/20 text-center">
+                        <span class="text-xs text-gray-400 font-semibold block uppercase">Trunk Height $H(t)$</span>
+                        <div class="text-2xl font-black text-emerald-400 my-1 mono" id="calcHeight">4.36 m</div>
+                        <p class="text-[10px] text-gray-500">Distance from base to frond production zone</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-black/40 border border-emerald-900/20 text-center">
+                        <span class="text-xs text-gray-400 font-semibold block uppercase">Growth Velocity $H'(t)$</span>
+                        <div class="text-2xl font-black text-cyan-400 my-1 mono" id="calcVelocity">0.62 m/yr</div>
+                        <p class="text-[10px] text-gray-500">$\frac{dH}{dt}$ instantaneous rate of elongation</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-black/40 border border-emerald-900/20 text-center">
+                        <span class="text-xs text-gray-400 font-semibold block uppercase">Acceleration $H''(t)$</span>
+                        <div class="text-2xl font-black text-amber-400 my-1 mono" id="calcAcceleration">+0.05 m/yr²</div>
+                        <p class="text-[10px] text-gray-500">Rate of change of growth velocity</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-black/40 border border-emerald-900/20 text-center">
+                        <span class="text-xs text-gray-400 font-semibold block uppercase">Tangent Equation</span>
+                        <div class="text-sm font-bold text-slate-300 my-2.5 mono" id="calcTangent">y = 0.62x - 1.84</div>
+                        <p class="text-[10px] text-gray-500">Tangent line approximation at $t$</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHRONOLOGICAL DERIVATIVE SOLVING STEP-BY-STEP (Interactive Academic Explainer) -->
+            <section class="glass-card rounded-2xl p-6 relative">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-emerald-400"></i> Interactive Analytical Derivative Solver
+                    </h2>
+                    <span class="text-xs text-gray-400 uppercase bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40 font-semibold">Step-by-Step Chain Rule</span>
+                </div>
+                <p class="text-xs text-gray-300 mb-4">
+                    Click the steps below to animate the analytical differentiation pathway using the quotient and chain rules on the primary logistical model.
+                </p>
+
+                <div class="space-y-3">
+                    <!-- Step 1 -->
+                    <div class="p-4 rounded-xl border border-emerald-900/20 bg-black/30 transition-all duration-300 step-card step-active" id="step1">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-emerald-950 border border-emerald-400 text-emerald-400 text-xs font-bold flex items-center justify-center mt-0.5">1</span>
+                            <div>
+                                <h3 class="text-sm font-semibold text-white">Setup Quotient/Reciprocal Rule</h3>
+                                <p class="text-xs text-gray-400 mt-1">Rewrite the logistic function $H(t) = 12 \cdot u(t)^{-1}$ where $u(t) = 1 + 5e^{-0.22t}$ to apply power rule chain rule.</p>
+                                <div class="mt-2 text-sm text-emerald-300 bg-black/50 p-2.5 rounded-lg mono">
+                                    $$H(t) = 12 \left( 1 + 5e^{-0.22t} \right)^{-1}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="p-4 rounded-xl border border-emerald-900/20 bg-black/30 transition-all duration-300 step-card" id="step2">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-emerald-950 border border-emerald-800 text-gray-400 text-xs font-bold flex items-center justify-center mt-0.5">2</span>
+                            <div>
+                                <h3 class="text-sm font-semibold text-white">Apply Outside-Inside Rule (Chain Rule)</h3>
+                                <p class="text-xs text-gray-400 mt-1">Differentiate outer function $(-1 \cdot u^{-2})$ and multiply by derivative of inner function $\frac{d}{dt}(1 + 5e^{-0.22t})$.</p>
+                                <div class="mt-2 text-sm text-emerald-300 bg-black/50 p-2.5 rounded-lg mono">
+                                    $$\frac{dH}{dt} = 12 \cdot (-1) \left( 1 + 5e^{-0.22t} \right)^{-2} \cdot \frac{d}{dt} \left( 1 + 5e^{-0.22t} \right)$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="p-4 rounded-xl border border-emerald-900/20 bg-black/30 transition-all duration-300 step-card" id="step3">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-emerald-950 border border-emerald-800 text-gray-400 text-xs font-bold flex items-center justify-center mt-0.5">3</span>
+                            <div>
+                                <h3 class="text-sm font-semibold text-white">Differentiate exponential exponent</h3>
+                                <p class="text-xs text-gray-400 mt-1">Differentiate the inner exponent: $\frac{d}{dt} (5e^{-0.22t}) = 5e^{-0.22t} \cdot (-0.22) = -1.1e^{-0.22t}$.</p>
+                                <div class="mt-2 text-sm text-emerald-300 bg-black/50 p-2.5 rounded-lg mono">
+                                    $$\frac{dH}{dt} = -12 \left( 1 + 5e^{-0.22t} \right)^{-2} \cdot \left( -1.1e^{-0.22t} \right)$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="p-4 rounded-xl border border-emerald-900/20 bg-black/30 transition-all duration-300 step-card" id="step4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-emerald-950 border border-emerald-800 text-gray-400 text-xs font-bold flex items-center justify-center mt-0.5">4</span>
+                            <div>
+                                <h3 class="text-sm font-semibold text-white">Simplify and Final Elongation Derivative Model</h3>
+                                <p class="text-xs text-gray-400 mt-1">Multiply scalars: $-12 \cdot (-1.1) = +13.2$. Return the negative exponent to the denominator for standard quotient form.</p>
+                                <div class="mt-2 text-sm text-emerald-300 bg-black/50 p-2.5 rounded-lg mono">
+                                    $$H'(t) = \frac{13.2e^{-0.22t}}{(1+5e^{-0.22t})^2}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUTOPLAY OR CONTROL STEPS -->
+                <div class="flex justify-end gap-2 mt-4">
+                    <button id="prevStepBtn" class="px-4 py-2 rounded-lg bg-emerald-950 border border-emerald-800 hover:bg-emerald-900/50 text-xs font-bold text-emerald-400 transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Previous Step
+                    </button>
+                    <button id="nextStepBtn" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-xs font-bold text-slate-950 transition">
+                        Next Step <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- RIGHT SIDE: REAL-TIME PLANTATION DASHBOARD & ACADEMIC MODULES (4 COLS) -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+
+            <!-- REAL-TIME SCIENTIFIC ANALYSIS PANEL -->
+            <section class="glass-card rounded-2xl p-6 border-l-4 border-l-emerald-400 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl"></div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-circle-check text-emerald-400 animate-pulse text-lg"></i>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-tight">Real-Time Agronomic Diagnostics</h2>
+                </div>
+
+                <!-- STATUS BADGES -->
+                <div class="mb-5">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Physiological Status</span>
+                    <div id="statusBadge" class="py-2 px-3 rounded-lg font-extrabold text-sm uppercase text-center tracking-wide border transition-all duration-300">
+                        Calculating...
+                    </div>
+                </div>
+
+                <!-- KEY METRIC DATA CARDS -->
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-gray-400">Yield Suitability Index</span>
+                            <span class="text-emerald-400 font-bold" id="yieldScore">--</span>
+                        </div>
+                        <div class="w-full bg-emerald-950/60 rounded-full h-1.5 border border-emerald-900/30 overflow-hidden">
+                            <div id="yieldBar" class="bg-gradient-to-r from-emerald-500 to-green-300 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-gray-400">Harvesting Safety Threshold</span>
+                            <span class="text-amber-400 font-bold" id="harvestSafety">--</span>
+                        </div>
+                        <div class="w-full bg-emerald-950/60 rounded-full h-1.5 border border-emerald-900/30 overflow-hidden">
+                            <div id="harvestBar" class="bg-gradient-to-r from-amber-500 to-amber-300 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-emerald-900/30 my-4 pt-4 space-y-3">
+                        <div class="bg-black/40 p-3 rounded-lg border border-emerald-900/10">
+                            <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block">Agronomist Recommendation</span>
+                            <p class="text-xs text-gray-300 mt-1 leading-relaxed" id="agriRecommendation">
+                                Loading dynamic recommendation based on growth rates...
+                            </p>
+                        </div>
+                        
+                        <div class="bg-black/40 p-3 rounded-lg border border-emerald-900/10">
+                            <span class="text-[10px] uppercase font-bold text-cyan-400 tracking-wider block">Calculus Biological Value</span>
+                            <p class="text-xs text-gray-300 mt-1 leading-relaxed" id="calculusBiological">
+                                Elongation rate is currently stable.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ACADEMIC CURRICULUM SYLLABUS PANEL -->
+            <section class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-book-open text-emerald-400"></i> Agrotechnology Syllabus Module
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="p-3 bg-black/20 hover:bg-black/40 rounded-lg border border-emerald-900/20 transition cursor-pointer" onclick="toggleSyllabus(1)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wide">1. Sigmoid/Logistic Growth Curve</h3>
+                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs" id="syllabusIcon1"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 hidden" id="syllabusContent1">
+                            Biological growth is rarely infinite. Initial slow growth (lag phase) leads to rapid cell division (log phase), and eventually, resource depletion (light, soil nutrients, spaces) causes plateauing (stationary/asymptote phase). Logistic equations accurately model physical trunk expansion of oil palm until height asymptotes at roughly 12 meters due to osmotic pumping limits in standard environments.
+                        </p>
+                    </div>
+
+                    <div class="p-3 bg-black/20 hover:bg-black/40 rounded-lg border border-emerald-900/20 transition cursor-pointer" onclick="toggleSyllabus(2)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wide">2. The Bio-Meaning of the 1st Derivative</h3>
+                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs" id="syllabusIcon2"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 hidden" id="syllabusContent2">
+                            The first derivative, $\frac{dH}{dt}$, is the exact rate of trunk elongation. In early vegetative stages, velocity is low. When the palm reaches young maturity (4–10 years), the elongation speed peaks at almost 0.66 meters per year, which increases competitive forest floor canopy height, afterward tapering as resources shift to heavy seed bunch production.
+                        </p>
+                    </div>
+
+                    <div class="p-3 bg-black/20 hover:bg-black/40 rounded-lg border border-emerald-900/20 transition cursor-pointer" onclick="toggleSyllabus(3)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wide">3. Inflexion Points & Acceleration</h3>
+                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs" id="syllabusIcon3"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 hidden" id="syllabusContent3">
+                            The mathematical inflection point occurs where the growth acceleration $H''(t) = 0$. For our model:
+                            $$t_{inflection} = \frac{\ln(5)}{0.22} \approx 7.31 \text{ years}$$
+                            This signals the exact biological transition moment from accelerating expansion to decelerating mature crop development, guiding nutrient formulation switches.
+                        </p>
+                    </div>
+
+                    <div class="p-3 bg-black/20 hover:bg-black/40 rounded-lg border border-emerald-900/20 transition cursor-pointer" onclick="toggleSyllabus(4)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wide">4. Harvesting & Replanting Limits</h3>
+                            <i class="fa-solid fa-chevron-down text-gray-500 text-xs" id="syllabusIcon4"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1.5 hidden" id="syllabusContent4">
+                            In Malaysia, physical height of $H \geq 10$ meters makes manual sickle harvesting with aluminum poles (egrek poles) hazardous, highly labor intensive, and inefficient. Calculated derivative-driven lifecycle metrics help estates predict when to schedule mechanical clearings, replanting, and chemical herbicide injections.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCIENTIFIC REFERENCES & METADATA -->
+            <section class="glass-card rounded-2xl p-6 bg-gradient-to-br from-emerald-950/45 to-black/80">
+                <h2 class="text-sm font-bold text-emerald-400 tracking-wider uppercase mb-3 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bookmark"></i> Academic Citations & Data Sources
+                </h2>
+                <ul class="space-y-3 text-xs text-gray-400">
+                    <li class="border-b border-emerald-950 pb-2">
+                        <span class="text-white block font-semibold">Malaysian Palm Oil Board (MPOB) Journals</span>
+                        <p class="italic text-[11px] text-emerald-300/80">Crop development & height growth dynamics of commercial Tenera cultivars</p>
+                    </li>
+                    <li class="border-b border-emerald-950 pb-2">
+                        <span class="text-white block font-semibold">The Journal of Agricultural Science</span>
+                        <p class="italic text-[11px] text-emerald-300/80">"Modeling the vertical growth dynamics of Elaeis guineensis under humid tropical regimes"</p>
+                    </li>
+                    <li>
+                        <span class="text-white block font-semibold">PORIM/MPOB Information Series No. 104</span>
+                        <p class="italic text-[11px] text-emerald-300/80">Physiological constraints on height and fresh fruit bunch productivity in mature stands</p>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 text-center py-8 text-xs text-gray-500 border-t border-emerald-950 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Academic Simulation Model. Prepared for University Agrotechnology & Applied Calculus Undergraduate Programs.</p>
+            <p class="mt-1 text-emerald-600">Simulations utilize high-fidelity fourth-order mathematical functions optimized for standard agronomic evaluation.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & VISUALIZATION ENGINE -->
+    <script>
+        // Set up equations background matrix
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const equations = [
+            'H(t) = L / (1 + a * e^{-kt})',
+            'dH/dt = H * k * (1 - H/L)',
+            'H\'(t) = 13.2e^{-0.22t} / (1+5e^{-0.22t})^2',
+            '\\lim_{t \\to \\infty} H(t) = 12',
+            '\\nabla H(t)',
+            '\\int H\'(t) dt = H(t) + C',
+            'H\'\'(t) = 0 \\implies t_{inflection}',
+            'H_0 = 2.0 m',
+            '\\delta H / \\delta t'
+        ];
+
+        const particles = [];
+        const maxParticles = 30;
+
+        class MathParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.text = equations[Math.floor(Math.random() * equations.length)];
+                this.speed = 0.2 + Math.random() * 0.5;
+                this.fontSize = 10 + Math.random() * 8;
+                this.opacity = 0.05 + Math.random() * 0.25;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(0, 255, 102, ${this.opacity})`;
+                ctx.font = `${this.fontSize}px 'JetBrains Mono', monospace`;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+
+            update() {
+                this.y -= this.speed;
+                if (this.y < -30) {
+                    this.reset();
+                    this.y = canvas.height + 20;
+                }
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new MathParticle());
+        }
+
+        function animateMatrix() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateMatrix);
+        }
+        animateMatrix();
+
+        // LOGISTIC HEIGHT GROWTH EQUATIONS MATH CALCULATOR
+        const L = 12; // Asymptotic ceiling (Max Height)
+        const a = 5;  // Initial growth offset parameter
+        const k = 0.22; // Growth Rate constant for Tenera Oil Palm
+
+        // Formula: H(t) = L / (1 + a * e^(-k*t))
+        function getHeight(t) {
+            return L / (1 + a * Math.exp(-k * t));
+        }
+
+        // Velocity Formula: H'(t) = (L * a * k * e^(-k*t)) / (1 + a * e^(-k*t))^2
+        function getVelocity(t) {
+            const num = L * a * k * Math.exp(-k * t);
+            const den = Math.pow(1 + a * Math.exp(-k * t), 2);
+            return num / den;
+        }
+
+        // Acceleration Formula: H''(t) = H'(t) * k * ((a * e^(-k*t) - 1) / (a * e^(-k*t) + 1))
+        function getAcceleration(t) {
+            const expTerm = a * Math.exp(-k * t);
+            const vel = getVelocity(t);
+            return vel * k * ((expTerm - 1) / (expTerm + 1));
+        }
+
+        // Generate Dataset for Graph rendering
+        const yearsData = [];
+        const heightVals = [];
+        const velocityVals = [];
+
+        for (let t = 0; t <= 35; t += 0.5) {
+            yearsData.push(t);
+            heightVals.push(getHeight(t).toFixed(3));
+            velocityVals.push(getVelocity(t).toFixed(3));
+        }
+
+        // Initialize CHART.JS Charts
+        const heightCtx = document.getElementById('heightChart').getContext('2d');
+        const velocityCtx = document.getElementById('velocityChart').getContext('2d');
+
+        // Create Gradient fills
+        const greenGrad = heightCtx.createLinearGradient(0, 0, 0, 250);
+        greenGrad.addColorStop(0, 'rgba(0, 255, 102, 0.45)');
+        greenGrad.addColorStop(1, 'rgba(0, 255, 102, 0)');
+
+        const blueGrad = velocityCtx.createLinearGradient(0, 0, 0, 250);
+        blueGrad.addColorStop(0, 'rgba(0, 243, 255, 0.45)');
+        blueGrad.addColorStop(1, 'rgba(0, 243, 255, 0)');
+
+        const heightChart = new Chart(heightCtx, {
+            type: 'line',
+            data: {
+                labels: yearsData,
+                datasets: [{
+                    label: 'Trunk Height H(t) [meters]',
+                    data: heightVals,
+                    borderColor: '#00ff66',
+                    borderWidth: 2.5,
+                    backgroundColor: greenGrad,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: '#00ff66',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(0, 255, 102, 0.05)' },
+                        ticks: { color: '#8892b0', font: { family: 'Plus Jakarta Sans' } },
+                        title: { display: true, text: 'Plantation Stand Age (Years)', color: '#a8b2d1' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(0, 255, 102, 0.05)' },
+                        ticks: { color: '#8892b0', font: { family: 'Plus Jakarta Sans' } },
+                        title: { display: true, text: 'Trunk Height H (m)', color: '#a8b2d1' },
+                        suggestedMax: 13
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const velocityChart = new Chart(velocityCtx, {
+            type: 'line',
+            data: {
+                labels: yearsData,
+                datasets: [{
+                    label: 'Elongation Speed H\'(t) [m/year]',
+                    data: velocityVals,
+                    borderColor: '#00f3ff',
+                    borderWidth: 2.5,
+                    backgroundColor: blueGrad,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 6,
+                    pointHoverBackgroundColor: '#00f3ff',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(0, 243, 255, 0.05)' },
+                        ticks: { color: '#8892b0', font: { family: 'Plus Jakarta Sans' } },
+                        title: { display: true, text: 'Plantation Stand Age (Years)', color: '#a8b2d1' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(0, 243, 255, 0.05)' },
+                        ticks: { color: '#8892b0', font: { family: 'Plus Jakarta Sans' } },
+                        title: { display: true, text: 'Growth Rate (m / year)', color: '#a8b2d1' },
+                        suggestedMax: 0.8
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // RE-CALCULATION DYNAMIC ROUTINE
+        const ageSlider = document.getElementById('ageSlider');
+        const ageDisplay = document.getElementById('ageDisplay');
+
+        const calcHeightEl = document.getElementById('calcHeight');
+        const calcVelocityEl = document.getElementById('calcVelocity');
+        const calcAccelerationEl = document.getElementById('calcAcceleration');
+        const calcTangentEl = document.getElementById('calcTangent');
+
+        const statusBadge = document.getElementById('statusBadge');
+        const yieldScore = document.getElementById('yieldScore');
+        const yieldBar = document.getElementById('yieldBar');
+        const harvestSafety = document.getElementById('harvestSafety');
+        const harvestBar = document.getElementById('harvestBar');
+        const agriRec = document.getElementById('agriRecommendation');
+        const calcBio = document.getElementById('calculusBiological');
+
+        function updateSimulationValues(t) {
+            ageDisplay.textContent = parseFloat(t).toFixed(1);
+
+            const h = getHeight(t);
+            const v = getVelocity(t);
+            const acc = getAcceleration(t);
+
+            // Update Primary Panel Indicators
+            calcHeightEl.innerHTML = `${h.toFixed(2)} <span class="text-xs">meters</span>`;
+            calcVelocityEl.innerHTML = `${v.toFixed(3)} <span class="text-xs">m/yr</span>`;
+            
+            const sign = acc >= 0 ? "+" : "";
+            calcAccelerationEl.innerHTML = `${sign}${acc.toFixed(3)} <span class="text-xs">m/yr²</span>`;
+            
+            if (acc >= 0) {
+                calcAccelerationEl.className = "text-2xl font-black text-amber-400 my-1 mono";
+            } else {
+                calcAccelerationEl.className = "text-2xl font-black text-rose-500 my-1 mono";
+            }
+
+            // Tangent Line Calculation: y = mx + c (At t point, slope is velocity v)
+            // H(t) = v*t + c => c = H(t) - v*t
+            const c = h - v * t;
+            const cSign = c >= 0 ? "+" : "-";
+            calcTangentEl.textContent = `y = ${v.toFixed(2)}t ${cSign} ${Math.abs(c).toFixed(2)}`;
+
+            // Biological Growth Deciphering & Diagnostics Dashboard Logic
+            let statusText = "";
+            let statusColorClass = "";
+            let yieldVal = 0;
+            let safetyVal = 100;
+            let recommendation = "";
+            let bioMathText = "";
+
+            if (t < 4) {
+                // Early Vegetative Stage
+                statusText = "LAG PHASE: IMMATURE PLANTATION";
+                statusColorClass = "bg-emerald-950/80 text-emerald-400 border-emerald-500/50";
+                yieldVal = Math.round(t * 12); // Low yield profile
+                safetyVal = 100;
+                recommendation = "Prioritize legume cover cropping (LCC) & aggressive weed suppression. Minimize canopy competition. Optimal nitrogen fertilization triggers strong baseline root-to-stem networks.";
+                bioMathText = "Growth velocity $\\frac{dH}{dt}$ is slow ($<0.4$ m/yr). Initial lag phase because the root matrix and foliage density are in the developmental establishment cycle.";
+            } else if (t >= 4 && t < 12) {
+                // Inflection / Rapid growth
+                statusText = "LOG PHASE: PEAK ELONGATION & VEGETATIVE ACCELERATION";
+                statusColorClass = "bg-emerald-500/10 text-emerald-400 border-emerald-400/50";
+                yieldVal = 85 + Math.round((t - 4) * 1.5); // Optimal bunches yield
+                // Safety decreases as height grows
+                safetyVal = Math.round(100 - (h / 12) * 35);
+                recommendation = "Primary harvest cycle. Regular field collection using high-efficiency lightweight carbon-fiber tools. Apply balanced potassium & bunch-ash nutrients to maximize yield and structural trunk density.";
+                bioMathText = `Peak physiological growth achieved near the theoretical mathematical inflection point ($t = 7.31$ yrs). Inflection occurs where acceleration $H''(t) = 0$.`;
+            } else if (t >= 12 && t < 22) {
+                // Slower Mature phase
+                statusText = "STABILIZING MATURITY: SENESCENCE TRANSITION";
+                statusColorClass = "bg-amber-950/80 text-amber-400 border-amber-500/40";
+                yieldVal = 95 - (t - 12) * 2.5; 
+                safetyVal = Math.round(100 - (h / 12) * 65);
+                recommendation = "Canopy maturation stabilizes vertical elongation. Tall-frond harvesting poles required. Intensify soil moisture management to offset canopy evaporation loads.";
+                bioMathText = `Velocity $\\frac{dH}{dt}$ slows to $<0.30$ m/yr. The palm enters the asymptotic phase as energy investments shift extensively to support dense seed bundle productivity.`;
+            } else {
+                // High Tall stands / Limit Replant
+                statusText = "CRITICAL LIMIT: REPLANT THRESHOLD";
+                statusColorClass = "bg-red-950/80 text-red-500 border-red-500/50 animate-pulse";
+                yieldVal = Math.max(25, 60 - (t - 22) * 3);
+                safetyVal = Math.max(5, 100 - (h / 12) * 98);
+                recommendation = "REPLANTING PROTOCOL INITIATED. Heavy harvesting height restriction. High worker hazard score. Clear stand plots systematically. Plan next crop rotation to prevent soil exhaustion.";
+                bioMathText = `Height $H(t)$ asymptotes close to the theoretical limit of 12 meters ($\\lim_{t \\to \\infty} H(t) = 12$). Growth velocity approaches zero ($dH/dt \\to 0$).`;
+            }
+
+            statusBadge.textContent = statusText;
+            statusBadge.className = `py-2 px-3 rounded-lg font-extrabold text-xs uppercase text-center tracking-wide border transition-all duration-300 ${statusColorClass}`;
+            
+            yieldScore.textContent = `${Math.round(yieldVal)}%`;
+            yieldBar.style.width = `${yieldVal}%`;
+            
+            harvestSafety.textContent = `${Math.round(safetyVal)}%`;
+            harvestBar.style.width = `${safetyVal}%`;
+            
+            agriRec.textContent = recommendation;
+            calculusBiological.textContent = bioMathText;
+
+            // Update Equation Text in UI to be re-rendered
+            MathJax.typesetPromise([calculusBiological]);
+
+            // Synchronize Graph Dot Highlights
+            updateChartHighlights(t);
+        }
+
+        function updateChartHighlights(t) {
+            // Re-find the exact coordinates to place interactive highlights
+            const targetVal = parseFloat(t);
+            const dataIndex = Math.min(Math.max(Math.floor(targetVal * 2), 0), yearsData.length - 1);
+            
+            // Generate visual interaction dots on chart.js
+            heightChart.setActiveElements([{ datasetIndex: 0, index: dataIndex }]);
+            heightChart.tooltip.setActiveElements([{ datasetIndex: 0, index: dataIndex }], { x: 0, y: 0 });
+            
+            velocityChart.setActiveElements([{ datasetIndex: 0, index: dataIndex }]);
+            velocityChart.tooltip.setActiveElements([{ datasetIndex: 0, index: dataIndex }], { x: 0, y: 0 });
+
+            heightChart.update();
+            velocityChart.update();
+        }
+
+        // Add Graph Click events for dynamic scrubbing
+        function handleChartClick(event, elements, isVelocity = false) {
+            if (elements && elements.length > 0) {
+                const elementIndex = elements[0].index;
+                const yearPoint = yearsData[elementIndex];
+                ageSlider.value = yearPoint;
+                updateSimulationValues(yearPoint);
+            }
+        }
+
+        // Register custom graph clicks
+        document.getElementById('heightChart').onclick = (e) => {
+            const elements = heightChart.getElementsAtEventForMode(e, 'nearest', { intersect: false }, true);
+            handleChartClick(e, elements);
+        };
+        document.getElementById('velocityChart').onclick = (e) => {
+            const elements = velocityChart.getElementsAtEventForMode(e, 'nearest', { intersect: false }, true);
+            handleChartClick(e, elements, true);
+        };
+
+        // Connect the Slider scrubber
+        ageSlider.addEventListener('input', (e) => {
+            updateSimulationValues(e.target.value);
+        });
+
+        // Initialize state on first run
+        updateSimulationValues(10);
+
+        // Step-by-Step Derivative Solver Animation Controller
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function renderActiveStep(stepIndex) {
+            document.querySelectorAll('.step-card').forEach(card => {
+                card.classList.remove('step-active');
+                card.querySelector('span').classList.remove('border-emerald-400', 'text-emerald-400');
+                card.querySelector('span').classList.add('border-emerald-800', 'text-gray-400');
+            });
+
+            const activeCard = document.getElementById(`step${stepIndex}`);
+            activeCard.classList.add('step-active');
+            
+            const badge = activeCard.querySelector('span');
+            badge.classList.remove('border-emerald-800', 'text-gray-400');
+            badge.classList.add('border-emerald-400', 'text-emerald-400');
+
+            // Scroll the step beautifully into focus within the scroll viewport
+            activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        document.getElementById('nextStepBtn').addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+            } else {
+                currentStep = 1; // Cycle
+            }
+            renderActiveStep(currentStep);
+        });
+
+        document.getElementById('prevStepBtn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+            } else {
+                currentStep = totalSteps; // Cycle back
+            }
+            renderActiveStep(currentStep);
+        });
+
+        // Interactive syllabus dropdown accordion toggling
+        function toggleSyllabus(index) {
+            const content = document.getElementById(`syllabusContent${index}`);
+            const icon = document.getElementById(`syllabusIcon${index}`);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+            // Trigger Mathjax re-render for formulas inside newly opened accordions
+            MathJax.typesetPromise([content]);
+        }
+    </script>
+</body>
+</html>
